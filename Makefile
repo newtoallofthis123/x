@@ -1,7 +1,7 @@
 BINARY_NAME=x
 
 build: 
-	@go build -C cmd -o ../bin/$(BINARY_NAME)
+	@go build -o bin/$(BINARY_NAME) .
 
 run: build
 	@./bin/$(BINARY_NAME)
