@@ -10,13 +10,14 @@ import (
 )
 
 var (
-	output = flag.String("o", "", "Output file")
-	help   = flag.Bool("h", false, "Show help")
-	list   = flag.Bool("l", false, "List out all parsed tasks and exit")
-	add    = flag.Bool("a", false, "Add a task to the database")
-	del    = flag.Bool("d", false, "Delete a task from the database")
-	sup    = flag.Bool("s", false, "Suppress output")
-	sync   = flag.Bool("sync", false, "Sync the database with the current config")
+	output  = flag.String("o", "", "Output file")
+	help    = flag.Bool("h", false, "Show help")
+	version = flag.Bool("v", false, "Show version")
+	list    = flag.Bool("l", false, "List out all parsed tasks and exit")
+	add     = flag.Bool("a", false, "Add a task to the database")
+	del     = flag.Bool("d", false, "Delete a task from the database")
+	sup     = flag.Bool("s", false, "Suppress output")
+	sync    = flag.Bool("sync", false, "Sync the database with the current config")
 
 	// TODO: Implement this
 	// config = flag.String("c", "./exec.conf", "Specify a config file, defaults to ./exec.conf")
@@ -27,6 +28,11 @@ func main() {
 
 	if *help {
 		flag.PrintDefaults()
+		return
+	}
+
+	if *version {
+		fmt.Println("X v.0.1.2")
 		return
 	}
 
@@ -112,6 +118,10 @@ func main() {
 	}
 
 	if cmd == "" {
+		fmt.Println("=============")
+		fmt.Println("X v.0.1.2")
+		fmt.Println("=============")
+		flag.PrintDefaults()
 		return
 	}
 
