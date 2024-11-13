@@ -10,7 +10,7 @@ func GetDbPath() string {
 	return path.Join(home, "."+APP_NAME, APP_NAME+".db")
 }
 
-func GetConfigPaths() ([]string, error) {
+func GetConfigPaths() []string {
 	configDir, _ := os.UserConfigDir()
 	home, _ := os.UserHomeDir()
 
@@ -31,14 +31,11 @@ func GetConfigPaths() ([]string, error) {
 		}
 	}
 
-	return exists, nil
+	return exists
 }
 
 func GetConfigPath() (string, error) {
-	paths, err := GetConfigPaths()
-	if err != nil {
-		return "", err
-	}
+	paths := GetConfigPaths()
 	return paths[0], nil
 }
 

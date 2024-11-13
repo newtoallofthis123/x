@@ -24,10 +24,10 @@ func (d *Db) GetTask(name string) (Task, bool) {
 	return t, true
 }
 
-func (d *Db) GetAllTasks() ([]Task, bool) {
+func (d *Db) GetAllTasks() ([]Task, error) {
 	rows, err := d.db.Query("SELECT id, name, cmd, last_used FROM tasks")
 	if err != nil {
-		return []Task{}, false
+		return []Task{}, err
 	}
 	var tasks []Task
 
@@ -35,12 +35,12 @@ func (d *Db) GetAllTasks() ([]Task, bool) {
 		var t Task
 		err := rows.Scan(&t.Id, &t.Name, &t.Cmd, &t.LastUsed)
 		if err != nil {
-			return []Task{}, false
+			return []Task{}, err
 		}
 		tasks = append(tasks, t)
 	}
 
-	return tasks, true
+	return tasks, nil
 }
 
 func (d *Db) UpdateTask(name, cmd string) error {
