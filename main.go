@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/newtoallofthis123/exec/db"
-	"github.com/newtoallofthis123/exec/utils"
+	"github.com/newtoallofthis123/x/db"
+	"github.com/newtoallofthis123/x/utils"
 )
 
 var (

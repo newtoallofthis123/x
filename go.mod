@@ -1,4 +1,4 @@
-module github.com/newtoallofthis123/exec
+module github.com/newtoallofthis123/x
 
 go 1.22.2
 

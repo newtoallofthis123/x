@@ -3,8 +3,8 @@ package utils
 import (
 	"strings"
 
-	"github.com/newtoallofthis123/exec/db"
-	"github.com/newtoallofthis123/exec/parser"
+	"github.com/newtoallofthis123/x/db"
+	"github.com/newtoallofthis123/x/parser"
 )
 
 func CompileTasks(paths []string, db *db.Db) (map[string][]string, error) {
