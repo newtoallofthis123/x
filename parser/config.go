@@ -36,6 +36,9 @@ func MakeParser(configFile string) (Parser, error) {
 
 func (p *Parser) Parse() error {
 	lines := strings.Split(p.content, "\n")
+
+	pointers := make(map[string]string, 0)
+
 	for _, line := range lines {
 		// comments start with #
 		if len(line) == 0 || line[0] == '#' {
@@ -50,6 +53,10 @@ func (p *Parser) Parse() error {
 		name := strings.TrimSpace(subs[0])
 		cmdsRaw := strings.TrimSpace(subs[1])
 		cmds := make([]string, 0)
+		if cmdsRaw[0] == '*' {
+			pointers[name] = cmdsRaw[1:]
+			continue
+		}
 		if cmdsRaw[0] == '[' && cmdsRaw[len(cmdsRaw)-1] == ']' {
 			cmds = strings.Split(cmdsRaw[1:len(cmdsRaw)-1], ",")
 		} else {
@@ -57,6 +64,15 @@ func (p *Parser) Parse() error {
 		}
 
 		p.cmds[name] = cmds
+	}
+
+	for k, v := range pointers {
+		cmds, ok := p.cmds[v]
+		if !ok {
+			return &ParserError{k, "Pointer not found"}
+		}
+
+		p.cmds[k] = cmds
 	}
 
 	return nil
