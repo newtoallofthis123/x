@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"strings"
+
 	"github.com/newtoallofthis123/exec/db"
 	"github.com/newtoallofthis123/exec/parser"
 )
@@ -13,7 +15,13 @@ func CompileTasks(paths []string, db *db.Db) (map[string][]string, error) {
 	}
 
 	for _, t := range fromDb {
-		tasks[t.Name] = append(tasks[t.Name], t.Cmd)
+		cmds := strings.Split(t.Cmd, "&&")
+		cleaned := make([]string, 0)
+		for _, c := range cmds {
+			cleaned = append(cleaned, strings.TrimSpace(c))
+		}
+
+		tasks[t.Name] = append(tasks[t.Name], cleaned...)
 	}
 
 	for _, path := range paths {
