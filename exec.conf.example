@@ -1,0 +1,3 @@
+gs = [git add ., git commit]
+good game = echo gg | cowsay
+gg = *good game
