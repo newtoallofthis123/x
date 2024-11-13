@@ -53,7 +53,7 @@ func (d *Db) DeleteTaskByName(name string) error {
 	return err
 }
 
-func (d *Db) DeleteTaskById(id int) error {
-	_, err := d.db.Exec("DELETE FROM tasks WHERE id = ?", id)
+func (d *Db) DeleteTask(q string) error {
+	_, err := d.db.Exec("DELETE FROM tasks WHERE id = ? OR name = ?", q, q)
 	return err
 }
