@@ -31,7 +31,6 @@ The order is given in an ascending order, so if you have a local alias that is t
 x [flags] command
 ```
 
-Note: x is the recommended alias for exec
 Note: exec does not support args since it would be counter intuitive to the purpose of the tool. Only flags are supported.
 
 ### Flags
@@ -49,10 +48,8 @@ Note: exec does not support args since it would be counter intuitive to the purp
 ## Installation
 
 ```bash
-go install github.com/newtoallofthis123/exec
+go install github.com/newtoallofthis123/x@latest
 ```
-
-You can optionally set `alias x=exec` for additional cool points. 
 
 ## Configuration
 
