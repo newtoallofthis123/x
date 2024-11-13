@@ -10,6 +10,10 @@ func Run(file string, cmds []string) error {
 	output := os.Stdout
 
 	if file != "" {
+		if file == "!" {
+			file = os.DevNull
+		}
+
 		// open the file
 		f, err := os.OpenFile(file, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
@@ -23,6 +27,32 @@ func Run(file string, cmds []string) error {
 	for _, c := range cmds {
 		if c[0] == '"' && c[len(c)-1] == '"' {
 			c = c[1 : len(c)-1]
+		}
+
+		pipes := strings.Split(c, "|")
+		if len(pipes) > 1 {
+			execs := make([]*exec.Cmd, 0)
+
+			for i := 0; i < len(pipes); i++ {
+				pipes[i] = strings.TrimSpace(pipes[i])
+				cs := strings.Split(pipes[i], " ")
+				cmd := exec.Command(cs[0], cs[1:]...)
+				execs = append(execs, cmd)
+			}
+
+			for i := 0; i < len(execs)-1; i++ {
+				execs[i].Stdout, _ = execs[i+1].StdinPipe()
+			}
+
+			execs[len(execs)-1].Stdout = output
+
+			for _, e := range execs {
+				err := e.Start()
+				if err != nil {
+					return err
+				}
+			}
+			continue
 		}
 
 		cs := strings.Split(c, " ")
