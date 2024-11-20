@@ -11,6 +11,7 @@ type Parser struct {
 	cmds       map[string][]string
 }
 
+// MakeParser creates and returns a new Parser instance using the provided configuration file.
 func MakeParser(configFile string) (Parser, error) {
 	file, err := os.Open(configFile)
 	if err != nil {
@@ -34,6 +35,7 @@ func MakeParser(configFile string) (Parser, error) {
 	return Parser{configFile, string(content), make(map[string][]string)}, nil
 }
 
+// Parse processes the configuration and returns an error if any issues are encountered.
 func (p *Parser) Parse() error {
 	lines := strings.Split(p.content, "\n")
 
@@ -78,6 +80,8 @@ func (p *Parser) Parse() error {
 	return nil
 }
 
+// GetCmd retrieves the command associated with the given name.
+// It returns the command as a slice of strings and a boolean indicating if the command was found.
 func (p *Parser) GetCmd(name string) ([]string, bool) {
 	cmds, ok := p.cmds[name]
 	return cmds, ok

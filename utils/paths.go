@@ -10,6 +10,7 @@ func GetDbPath() string {
 	return path.Join(home, "."+APP_NAME, APP_NAME+".db")
 }
 
+// GetConfigPaths returns a slice of configuration paths based on the current directory.
 func GetConfigPaths(curr string) []string {
 	configDir, _ := os.UserConfigDir()
 	home, _ := os.UserHomeDir()
@@ -41,6 +42,7 @@ func GetConfigPath() (string, error) {
 	return paths[0], nil
 }
 
+// InitPaths initializes the necessary paths for the application.
 func InitPaths() {
 	// TODO: Handle the error
 	configDir, _ := os.UserConfigDir()

@@ -10,6 +10,7 @@ type Db struct {
 	db *sql.DB
 }
 
+// MakeDb initializes and returns a new database instance at the specified path.
 func MakeDb(path string) (Db, error) {
 	db, err := sql.Open("sqlite3", path)
 	if err != nil {
@@ -18,6 +19,7 @@ func MakeDb(path string) (Db, error) {
 	return Db{db}, nil
 }
 
+// Init initializes the database.
 func (d *Db) Init() error {
 	_, err := d.db.Exec("CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, name TEXT, cmd TEXT, last_used DATETIME)")
 	return err

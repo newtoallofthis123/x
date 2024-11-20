@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// Run executes the provided commands on the specified file.
+// It returns an error if any issues are encountered during execution.
 func Run(file string, cmds []string) error {
 	output := os.Stdout
 
@@ -71,6 +73,8 @@ func Run(file string, cmds []string) error {
 	return nil
 }
 
+// RunTasks executes the given tasks and writes the output to the specified file.
+// It returns an error if any issues are encountered during execution.
 func RunTasks(output string, tasks map[string][]string) error {
 	for _, cmds := range tasks {
 		err := Run(output, cmds)

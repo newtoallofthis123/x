@@ -7,6 +7,8 @@ import (
 	"github.com/newtoallofthis123/x/parser"
 )
 
+// CompileTasks compiles tasks from the provided paths and stores them in the database.
+// It returns a map of task names to their respective paths and an error if any issues are encountered.
 func CompileTasks(paths []string, db *db.Db) (map[string][]string, error) {
 	tasks := make(map[string][]string)
 	fromDb, err := db.GetAllTasks()
