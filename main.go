@@ -18,6 +18,7 @@ var (
 	del     = flag.Bool("d", false, "Delete a task from the database")
 	sup     = flag.Bool("s", false, "Suppress output")
 	sync    = flag.Bool("sync", false, "Sync the database with the current config")
+	edit    = flag.Bool("e", false, "Edit a task")
 
 	// TODO: Implement this
 	// config = flag.String("c", "./exec.conf", "Specify a config file, defaults to ./exec.conf")
@@ -79,6 +80,25 @@ func main() {
 		}
 
 		fmt.Println("Task deleted")
+		return
+	}
+
+	if *edit {
+		if cmd == "" {
+			panic("No task provided")
+		}
+
+		name := strings.Split(cmd, " ")[0]
+		c := strings.Join(strings.Split(cmd, " ")[1:], " ")
+		sp := strings.Split(c, ",")
+		cm := strings.Join(sp, "&&")
+
+		err = db.UpdateTask(name, cm)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Task updated")
 		return
 	}
 
