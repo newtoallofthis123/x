@@ -15,6 +15,7 @@ var (
 	version = flag.Bool("v", false, "Show version")
 	list    = flag.Bool("l", false, "List out all parsed tasks and exit")
 	add     = flag.Bool("a", false, "Add a task to the database")
+	rename  = flag.Bool("r", false, "Rename a task in the database")
 	del     = flag.Bool("d", false, "Delete a task from the database")
 	sup     = flag.Bool("s", false, "Suppress output")
 	sync    = flag.Bool("sync", false, "Sync the database with the current config")
@@ -46,7 +47,7 @@ func main() {
 	cmd = strings.TrimSpace(cmd)
 	utils.InitPaths()
 
-	if !*add && !*edit && !*del && !*list && !*sync && cmd == "" {
+	if !*add && !*edit && !*del && !*list && !*sync && cmd == "" && !*rename {
 		printHelp()
 		return
 	}
@@ -76,6 +77,33 @@ func main() {
 		}
 
 		fmt.Println("Task added")
+		return
+	}
+
+	if *rename {
+		if cmd == "" {
+			panic("No task provided")
+		}
+
+		name := strings.Split(cmd, " ")[0]
+		ren := strings.Split(cmd, " ")[1]
+
+		task, ok := db.GetTask(name)
+		if !ok {
+			panic("Task not found")
+		}
+
+		err = db.DeleteTaskByName(name)
+		if err != nil {
+			panic(err)
+		}
+
+		err = db.AddTask(ren, task.Cmd)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Task renamed")
 		return
 	}
 
