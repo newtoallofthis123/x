@@ -10,7 +10,7 @@ func GetDbPath() string {
 	return path.Join(home, "."+APP_NAME, APP_NAME+".db")
 }
 
-func GetConfigPaths() []string {
+func GetConfigPaths(curr string) []string {
 	configDir, _ := os.UserConfigDir()
 	home, _ := os.UserHomeDir()
 
@@ -22,6 +22,8 @@ func GetConfigPaths() []string {
 	possible = append(possible, path.Join(home, "."+CONFIG_FILE))
 	// in config directory
 	possible = append(possible, path.Join(configDir, APP_NAME, CONFIG_FILE))
+	// specified by user
+	possible = append(possible, curr)
 
 	// filter out the files that do not exist
 	exists := make([]string, 0)
@@ -35,7 +37,7 @@ func GetConfigPaths() []string {
 }
 
 func GetConfigPath() (string, error) {
-	paths := GetConfigPaths()
+	paths := GetConfigPaths("exec.conf")
 	return paths[0], nil
 }
 

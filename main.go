@@ -19,16 +19,21 @@ var (
 	sup     = flag.Bool("s", false, "Suppress output")
 	sync    = flag.Bool("sync", false, "Sync the database with the current config")
 	edit    = flag.Bool("e", false, "Edit a task")
-
-	// TODO: Implement this
-	// config = flag.String("c", "./exec.conf", "Specify a config file, defaults to ./exec.conf")
+	config  = flag.String("c", "exec.conf", "Specify a config file, defaults to exec.conf")
 )
+
+func printHelp() {
+	fmt.Println("=============")
+	fmt.Println("X v.0.1.2")
+	fmt.Println("=============")
+	flag.PrintDefaults()
+}
 
 func main() {
 	flag.Parse()
 
 	if *help {
-		flag.PrintDefaults()
+		printHelp()
 		return
 	}
 
@@ -40,6 +45,11 @@ func main() {
 	cmd := strings.Join(flag.Args(), " ")
 	cmd = strings.TrimSpace(cmd)
 	utils.InitPaths()
+
+	if !*add && !*edit && !*del && !*list && !*sync && cmd == "" {
+		printHelp()
+		return
+	}
 
 	db, err := db.MakeDb(utils.GetDbPath())
 	if err != nil {
@@ -102,7 +112,7 @@ func main() {
 		return
 	}
 
-	cmds, err := utils.CompileTasks(utils.GetConfigPaths(), &db)
+	cmds, err := utils.CompileTasks(utils.GetConfigPaths(*config), &db)
 	if err != nil {
 		panic(err)
 	}
@@ -135,13 +145,6 @@ func main() {
 		}
 
 		fmt.Println("Database synced")
-	}
-
-	if cmd == "" {
-		fmt.Println("=============")
-		fmt.Println("X v.0.1.2")
-		fmt.Println("=============")
-		flag.PrintDefaults()
 		return
 	}
 
